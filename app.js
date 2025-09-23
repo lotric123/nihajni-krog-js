@@ -177,9 +177,9 @@ document.getElementById('skin_calc').addEventListener('click', ()=>{
   const matIdx = parseInt(document.getElementById('skin_material').value, 10);
 
   const fm = f * FunitToFactor(fu);
-  const delta = inducalc.skinDepht(fm, matIdx);
-  document.getElementById('skin_d63').value = isFinite(delta) ? delta.toExponential(6) : '';
-  document.getElementById('skin_d98').value = isFinite(delta) ? (4*delta).toExponential(6) : '';
+  const delta = inducalc.skinDepht(fm, matIdx); // delta v metrih
+  document.getElementById('skin_d63').value = isFinite(delta) ? (delta * 1000).toFixed(6) : '';
+  document.getElementById('skin_d98').value = isFinite(delta) ? (4 * delta * 1000).toFixed(6) : '';
 });
 
 document.querySelectorAll('.tab-button').forEach(b=>{

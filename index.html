@@ -3,11 +3,11 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Nihajni krog — JS</title>
+  <title>Nihajni krog</title>
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <h1>Nihajni krog (JS)</h1>
+  <h1>Nihajni krog</h1>
 
   <div class="tabs">
     <button class="tab-button active" data-tab="resonanca">Resonanca</button>
@@ -58,6 +58,7 @@
 
   <div class="tab" id="induktor" style="display:none;">
     <h2>Večovojni</h2>
+    <img src="coil1.gif" alt="Večovojni induktor" style="max-width:200px;display:block;margin-bottom:1em;">
     <div class="panel">
       <div class="row"><label>Dolžina l = <input id="mv_l" type="number" step="any" /> <select id="mv_l_u"><option>mm</option><option>cm</option><option>m</option></select></label></div>
       <div class="row"><label>Premer D = <input id="mv_d" type="number" step="any" /> <select id="mv_d_u"><option>mm</option><option>cm</option><option>m</option></select></label></div>
@@ -67,6 +68,7 @@
     </div>
 
     <h2>Enoovojni (krožni)</h2>
+    <img src="enoovojni-okrogli.png" alt="Enoovojni krožni induktor" style="max-width:200px;display:block;margin-bottom:1em;">
     <div class="panel">
       <div class="row"><label>D (premer) = <input id="sv_D" type="number" step="any" /> <select id="sv_D_u"><option>mm</option><option>cm</option><option>m</option></select></label></div>
       <div class="row"><label>Premer cevi (deb. žice) = <input id="sv_wire" type="number" step="any" /> <select id="sv_wire_u"><option>mm</option><option>cm</option><option>m</option></select></label></div>
@@ -75,6 +77,7 @@
     </div>
 
     <h2>Enoovojni (pravokotni)</h2>
+    <img src="enoovojni-stirioglati.png" alt="Enoovojni pravokotni induktor" style="max-width:200px;display:block;margin-bottom:1em;">
     <div class="panel">
       <div class="row"><label>a = <input id="rv_a" type="number" step="any" /> <select id="rv_a_u"><option>mm</option><option>cm</option><option>m</option></select></label></div>
       <div class="row"><label>b = <input id="rv_b" type="number" step="any" /> <select id="rv_b_u"><option>mm</option><option>cm</option><option>m</option></select></label></div>
@@ -104,10 +107,10 @@
         <button id="skin_calc">Izračunaj</button>
       </div>
       <div class="row">
-        <label>63% toka (δ): <input id="skin_d63" readonly /></label>
+        <label>63% toka (δ): <input id="skin_d63" readonly /> mm</label>
       </div>
       <div class="row">
-        <label>98% toka (≈4·δ): <input id="skin_d98" readonly /></label>
+        <label>98% toka (≈4·δ): <input id="skin_d98" readonly /> mm</label>
       </div>
     </div>
   </div>
