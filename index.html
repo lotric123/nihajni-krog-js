@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="sl">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Nihajni krog — JS</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <h1>Nihajni krog (JS)</h1>
+
+  <div class="tabs">
+    <button class="tab-button active" data-tab="resonanca">Resonanca</button>
+    <button class="tab-button" data-tab="induktor">Induktor</button>
+    <button class="tab-button" data-tab="skin">Vdorna globina</button>
+  </div>
+
+  <div class="tab" id="resonanca" style="display:block;">
+    <div class="panel">
+      <div class="row">
+        <label>L = <input id="Lval" type="number" step="any" /> <select id="Lunit"><option>uH</option><option>mH</option><option>H</option></select></label>
+      </div>
+      <div class="row">
+        <label>C = <input id="Cval" type="number" step="any" /> <select id="Cunit"><option>pF</option><option>uF</option><option>mF</option><option>F</option></select></label>
+      </div>
+      <div class="row">
+        <label>f = <input id="Fval" type="number" step="any" /> <select id="Funit"><option>Hz</option><option>kHz</option><option>MHz</option></select></label>
+      </div>
+      <div class="row buttons">
+        <button id="calcL">Izračunaj L</button>
+        <button id="calcC">Izračunaj C</button>
+        <button id="calcF">Izračunaj f</button>
+      </div>
+    </div>
+
+    <div class="panel graph">
+      <div class="graph-controls">
+        <label>x os:
+          <select id="xaxis">
+            <option value="L">induktivnost</option>
+            <option value="C">kapacitivnost</option>
+            <option value="F">frekvenca</option>
+          </select>
+        </label>
+        <label>y os:
+          <select id="yaxis">
+            <option value="F">frekvenca</option>
+            <option value="C">kapacitivnost</option>
+            <option value="L">induktivnost</option>
+          </select>
+        </label>
+        <button id="drawGraph">izriši</button>
+      </div>
+      <canvas id="graph" width="300" height="300"></canvas>
+      <div class="graph-values">x: <span id="gx"></span> y: <span id="gy"></span></div>
+    </div>
+  </div>
+
+  <div class="tab" id="induktor" style="display:none;">
+    <h2>Večovojni</h2>
+    <div class="panel">
+      <div class="row"><label>Dolžina l = <input id="mv_l" type="number" step="any" /> <select id="mv_l_u"><option>mm</option><option>cm</option><option>m</option></select></label></div>
+      <div class="row"><label>Premer D = <input id="mv_d" type="number" step="any" /> <select id="mv_d_u"><option>mm</option><option>cm</option><option>m</option></select></label></div>
+      <div class="row"><label>n = <input id="mv_n" type="number" step="1" /></label></div>
+      <div class="row"><label>Rezultat L = <input id="mv_result" readonly /></label> <select id="mv_result_u"><option>uH</option><option>mH</option><option>H</option></select></div>
+      <div class="row buttons"><button id="mv_calc">Izračunaj</button></div>
+    </div>
+
+    <h2>Enoovojni (krožni)</h2>
+    <div class="panel">
+      <div class="row"><label>D (premer) = <input id="sv_D" type="number" step="any" /> <select id="sv_D_u"><option>mm</option><option>cm</option><option>m</option></select></label></div>
+      <div class="row"><label>Premer cevi (deb. žice) = <input id="sv_wire" type="number" step="any" /> <select id="sv_wire_u"><option>mm</option><option>cm</option><option>m</option></select></label></div>
+      <div class="row"><label>Rezultat L = <input id="sv_result" readonly /></label> <select id="sv_result_u"><option>uH</option><option>mH</option><option>H</option></select></div>
+      <div class="row buttons"><button id="sv_calc">Izračunaj</button></div>
+    </div>
+
+    <h2>Enoovojni (pravokotni)</h2>
+    <div class="panel">
+      <div class="row"><label>a = <input id="rv_a" type="number" step="any" /> <select id="rv_a_u"><option>mm</option><option>cm</option><option>m</option></select></label></div>
+      <div class="row"><label>b = <input id="rv_b" type="number" step="any" /> <select id="rv_b_u"><option>mm</option><option>cm</option><option>m</option></select></label></div>
+      <div class="row"><label>w (širina cevi) = <input id="rv_w" type="number" step="any" /> <select id="rv_w_u"><option>mm</option><option>cm</option><option>m</option></select></label></div>
+      <div class="row"><label>h (višina cevi) = <input id="rv_h" type="number" step="any" /> <select id="rv_h_u"><option>mm</option><option>cm</option><option>m</option></select></label></div>
+      <div class="row"><label>Rezultat L = <input id="rv_result" readonly /></label> <select id="rv_result_u"><option>uH</option><option>mH</option><option>H</option></select></div>
+      <div class="row buttons"><button id="rv_calc">Izračunaj</button></div>
+    </div>
+  </div>
+
+  <div class="tab" id="skin" style="display:none;">
+    <div class="panel">
+      <div class="row">
+        <label>Frekvenca = <input id="skin_f" type="number" step="any" value="1" /> <select id="skin_f_u"><option>Hz</option><option>kHz</option><option>MHz</option></select></label>
+      </div>
+      <div class="row">
+        <label>Material:
+          <select id="skin_material">
+            <option value="0">grafen</option><option value="1">srebro</option><option value="2">baker</option><option value="3">napuščen baker</option>
+            <option value="4">zlato</option><option value="5">aluminij</option><option value="6">volfram</option><option value="7">železo</option>
+            <option value="8">jeklo</option><option value="9">svinec</option><option value="10">titan</option><option value="11">inox</option>
+            <option value="12">grafit</option><option value="13">fluxtrol 100</option><option value="14">fluxtrol 50</option><option value="15">ferrotron559H</option>
+          </select>
+        </label>
+      </div>
+      <div class="row buttons">
+        <button id="skin_calc">Izračunaj</button>
+      </div>
+      <div class="row">
+        <label>63% toka (δ): <input id="skin_d63" readonly /></label>
+      </div>
+      <div class="row">
+        <label>98% toka (≈4·δ): <input id="skin_d98" readonly /></label>
+      </div>
+    </div>
+  </div>
+
+  <script type="module" src="app.js"></script>
+</body>
+</html>
