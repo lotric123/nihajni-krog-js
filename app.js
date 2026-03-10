@@ -1,5 +1,5 @@
-// app.js - uporablja Inducalc.js, integracija originalnih formul
-import Inducalc from './Inducalc.js';
+// app.js - uporablja Inducalc.js, integracija originalnih formul z vplivom jedra
+import Inducalc, { CoreMaterial } from './Inducalc.js';
 
 const inducalc = new Inducalc();
 const resonanca = new Inducalc.Resonanca();
@@ -117,20 +117,45 @@ canvas.addEventListener('mousemove', (ev)=>{
   gy.textContent = Number(ys[x]).toFixed(6);
 });
 
+// POSODOBLJENO: Izračun večovojne tuljave (vključen material jedra)
 document.getElementById('mv_calc').addEventListener('click', ()=>{
   const l = parseFloat(document.getElementById('mv_l').value) || 0;
   const lu = document.getElementById('mv_l_u').value;
   const D = parseFloat(document.getElementById('mv_d').value) || 0;
   const Du = document.getElementById('mv_d_u').value;
   const n = parseInt(document.getElementById('mv_n').value) || 1;
+  
+  // Parametri za jedro
+  const material = document.getElementById('mv_material').value;
+  const freq = parseFloat(document.getElementById('mv_f').value) || 0;
+  const fu = document.getElementById('mv_f_u').value;
+  const rodD = parseFloat(document.getElementById('mv_rod_d').value) || 0;
+  const rdu = document.getElementById('mv_rod_d_u').value;
+  const gap = parseFloat(document.getElementById('mv_gap').value) || 0;
+  const gu = document.getElementById('mv_gap_u').value;
+
   const LoutUnit = document.getElementById('mv_result_u').value;
 
-  const lm = toMeters(l,lu);
-  const Dm = toMeters(D,Du);
-  const a = Dm/2;
-  const b = lm;
+  const lm = toMeters(l, lu);
+  const Dm = toMeters(D, Du);
+  const a = Dm / 2; // polmer tuljave
+  const b = lm;     // dolžina tuljave
 
-  const L = inducalc.IndCalc(a,b,n);
+  let L;
+  if (material === CoreMaterial.Air) {
+    L = inducalc.IndCalc(a, b, n);
+  } else {
+    L = inducalc.indCalcReal(
+      a, 
+      b, 
+      n, 
+      freq * FunitToFactor(fu), 
+      toMeters(rodD, rdu), 
+      toMeters(gap, gu), 
+      material
+    );
+  }
+
   const out = L / LunitToFactor(LoutUnit);
   document.getElementById('mv_result').value = isFinite(out) ? Number(out.toFixed(6)) : '';
 });
