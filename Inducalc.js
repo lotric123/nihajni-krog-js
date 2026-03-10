@@ -1,12 +1,22 @@
-/* 
- * Inducalc.js — JavaScript prevod razreda Inducalc (iz C# iz nihajni_krog)
+/* * Inducalc.js — JavaScript prevod razreda Inducalc (iz C# iz nihajni_krog)
  * Original C# avtor: Claudio Girardi (2001-2008)
  * Licence: GNU GPL (kot v izvorni kodi)
  *
  * Prevedel: ChatGPT (JS ES module)
+ * Dopolnjeno za polno podporo izračunov z jedrom.
  */
 
 const Mu0 = 4 * Math.PI * 1e-7;
+
+// Definicije materialov za realni izračun
+export const CoreMaterial = {
+  Air: 'Air',
+  Steel: 'Steel',
+  StainlessSteel: 'StainlessSteel',
+  Copper: 'Copper',
+  Aluminum: 'Aluminum',
+  Brass: 'Brass'
+};
 
 export default class Inducalc {
   f1(x) {
@@ -15,6 +25,53 @@ export default class Inducalc {
 
   f2(x) {
     return x * (0.093842 + x * (0.002029 - x * 0.000801));
+  }
+
+  getMaterialProperties(mat) {
+    switch (mat) {
+      case CoreMaterial.Steel: return { MuR: 800, Conductivity: 6e6 };
+      case CoreMaterial.StainlessSteel: return { MuR: 1.05, Conductivity: 1.4e6 };
+      case CoreMaterial.Copper: return { MuR: 0.999, Conductivity: 5.8e7 };
+      case CoreMaterial.Aluminum: return { MuR: 1.00002, Conductivity: 3.5e7 };
+      case CoreMaterial.Brass: return { MuR: 1.0, Conductivity: 1.6e7 };
+      default: return { MuR: 1.0, Conductivity: 0 };
+    }
+  }
+
+  indCalcReal(coilRadius, coilLength, turns, frequency, rodDiameter, gap, material) {
+    const props = this.getMaterialProperties(material);
+    const mur = props.MuR;
+    const sigma = props.Conductivity;
+    const shape_ratio = (2 * coilRadius) / coilLength;
+
+    let Lair = 0;
+    if (shape_ratio <= 1) {
+      Lair = (Mu0 * turns * turns * Math.PI * coilRadius * coilRadius *
+             (this.f1(shape_ratio * shape_ratio) - (4 / (3 * Math.PI)) * shape_ratio)) / coilLength;
+    } else {
+      Lair = Mu0 * turns * turns * coilRadius *
+             ((Math.log(4 * shape_ratio) - 0.5) * this.f1(1 / (shape_ratio * shape_ratio)) +
+             this.f2(1 / (shape_ratio * shape_ratio)));
+    }
+
+    let L = Lair;
+
+    if (material !== CoreMaterial.Air) {
+      const mu = Mu0 * mur;
+      const omega = 2 * Math.PI * frequency;
+      const delta = Math.sqrt(2 / (omega * mu * sigma)); // vdorna globina
+      const rodRadius = rodDiameter / 2.0;
+
+      const coupling = Math.exp(-(gap / coilRadius)) * Math.pow(rodRadius / coilRadius, 2);
+      const skinFactor = Math.min(1.0, delta / rodRadius);
+
+      if (mur > 5) { // feromagnetni materiali (npr. jeklo)
+        L *= (1 + coupling * mur * skinFactor * 0.2);
+      } else { // nemagnetni materiali (npr. baker, aluminij)
+        L *= (1 - coupling * (1 - skinFactor) * 0.3);
+      }
+    }
+    return L;
   }
 
   IndCalc(a, b, n) {
