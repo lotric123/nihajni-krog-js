@@ -63,6 +63,22 @@
       <div class="row"><label>Dolžina l = <input id="mv_l" type="number" step="any" /> <select id="mv_l_u"><option>mm</option><option>cm</option><option>m</option></select></label></div>
       <div class="row"><label>Premer D = <input id="mv_d" type="number" step="any" /> <select id="mv_d_u"><option>mm</option><option>cm</option><option>m</option></select></label></div>
       <div class="row"><label>n = <input id="mv_n" type="number" step="1" /></label></div>
+      
+      <div class="row">
+        <label>Material jedra = 
+          <select id="mv_material">
+            <option value="Air">Zrak (Air)</option>
+            <option value="Steel">Jeklo (Steel)</option>
+            <option value="StainlessSteel">Inox (Stainless Steel)</option>
+            <option value="Copper">Baker (Copper)</option>
+            <option value="Aluminum">Aluminij (Aluminum)</option>
+            <option value="Brass">Medenina (Brass)</option>
+          </select>
+        </label>
+      </div>
+      <div class="row"><label>Frekvenca f = <input id="mv_f" type="number" step="any" value="1000" /> <select id="mv_f_u"><option>Hz</option><option>kHz</option><option>MHz</option></select></label></div>
+      <div class="row"><label>Premer jedra = <input id="mv_rod_d" type="number" step="any" value="0" /> <select id="mv_rod_d_u"><option>mm</option><option>cm</option><option>m</option></select></label></div>
+      <div class="row"><label>Zračna reža = <input id="mv_gap" type="number" step="any" value="0" /> <select id="mv_gap_u"><option>mm</option><option>cm</option><option>m</option></select></label></div>
       <div class="row"><label>Rezultat L = <input id="mv_result" readonly /></label> <select id="mv_result_u"><option>uH</option><option>mH</option><option>H</option></select></div>
       <div class="row buttons"><button id="mv_calc">Izračunaj</button></div>
     </div>
