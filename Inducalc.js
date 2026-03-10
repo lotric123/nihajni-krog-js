@@ -3,28 +3,10 @@
  * Original C# avtor: Claudio Girardi (2001-2008)
  * Licence: GNU GPL (kot v izvorni kodi)
  *
- * Popravljeno: 2026-03-10 - Dodane IndCalcReal in GetMaterial za C# parnost
+ * Prevedel: ChatGPT (JS ES module)
  */
 
 const Mu0 = 4 * Math.PI * 1e-7;
-
-// CoreMaterial enum
-const CoreMaterial = {
-  Air: 0,
-  Steel: 1,
-  StainlessSteel: 2,
-  Copper: 3,
-  Aluminum: 4,
-  Brass: 5
-};
-
-// MaterialProperties class
-class MaterialProperties {
-  constructor(mur, conductivity) {
-    this.MuR = mur;
-    this.Conductivity = conductivity;
-  }
-}
 
 export default class Inducalc {
   f1(x) {
@@ -46,67 +28,6 @@ export default class Inducalc {
       l = u0 * n * n * a * ((Math.log(4 * shape_ratio) - 0.5) * this.f1(1 / (shape_ratio * shape_ratio)) + this.f2(1 / (shape_ratio * shape_ratio)));
     }
     return l;
-  }
-
-  // Novo: IndCalcReal - izračun induktivnosti z materialnim jedrom
-  IndCalcReal(coilRadius, coilLength, turns, frequency, rodDiameter, gap, material) {
-    const mu0 = 4 * Math.PI * 1e-7;
-    const mat = this.GetMaterial(material);
-    
-    const mur = mat.MuR;
-    const sigma = mat.Conductivity;
-    
-    const shape_ratio = 2 * coilRadius / coilLength;
-    
-    let Lair;
-    if (shape_ratio <= 1) {
-      Lair = mu0 * turns * turns * Math.PI * coilRadius * coilRadius *
-             (this.f1(shape_ratio * shape_ratio) - (4 / (3 * Math.PI)) * shape_ratio) / coilLength;
-    } else {
-      Lair = mu0 * turns * turns * coilRadius *
-             ((Math.log(4 * shape_ratio) - 0.5) * this.f1(1 / (shape_ratio * shape_ratio)) +
-              this.f2(1 / (shape_ratio * shape_ratio)));
-    }
-    
-    let L = Lair;
-    
-    if (material !== CoreMaterial.Air) {
-      const mu = mu0 * mur;
-      const omega = 2 * Math.PI * frequency;
-      const delta = Math.sqrt(2 / (omega * mu * sigma));
-      const rodRadius = rodDiameter / 2.0;
-      
-      const coupling = Math.exp(-(gap / coilRadius)) * Math.pow(rodRadius / coilRadius, 2);
-      const skinFactor = Math.min(1.0, delta / rodRadius);
-      
-      if (mur > 5) {
-        // feromagnetni material
-        L *= (1 + coupling * mur * skinFactor * 0.2);
-      } else {
-        // nemagnetni materiali
-        L *= (1 - coupling * (1 - skinFactor) * 0.3);
-      }
-    }
-    
-    return L;
-  }
-
-  // Novo: GetMaterial - vrne lastnosti materiala
-  GetMaterial(material) {
-    switch (material) {
-      case CoreMaterial.Steel:
-        return new MaterialProperties(800, 6e6);
-      case CoreMaterial.StainlessSteel:
-        return new MaterialProperties(1.05, 1.4e6);
-      case CoreMaterial.Copper:
-        return new MaterialProperties(0.999, 5.8e7);
-      case CoreMaterial.Aluminum:
-        return new MaterialProperties(1.00002, 3.5e7);
-      case CoreMaterial.Brass:
-        return new MaterialProperties(1.0, 1.6e7);
-      default:
-        return new MaterialProperties(1.0, 0);
-    }
   }
 
   MutIndConc(a1, a2, b1, b2, n1, n2) {
@@ -269,6 +190,3 @@ export default class Inducalc {
     }
   };
 }
-
-// Izvoz za dostop do CoreMaterial in MaterialProperties
-export { CoreMaterial, MaterialProperties };
