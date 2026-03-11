@@ -1,16 +1,197 @@
-body{
-  font-family: Arial, Helvetica, sans-serif;
-  margin: 12px;
+/* style.css - Posodobljeno po zgledu aplikacije G-koda */
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 20px auto;
+    max-width: 900px;
+    background-color: #f4f4f9;
+    color: #333;
+    line-height: 1.5;
 }
-h1{margin:0 0 12px 0}
-.tabs{margin-bottom:12px}
-.tab-button{padding:6px 10px;margin-right:4px}
-.tab-button.active{background:#ddd}
-.panel{background:#f4f4f4;padding:8px;margin-bottom:12px;border-radius:4px}
-.row{margin:6px 0}
-.row label{display:block}
-.buttons{display:flex;gap:8px}
-.graph{display:flex;flex-direction:column;gap:8px;max-width:320px}
-.graph-controls{display:flex;gap:6px;flex-wrap:wrap;align-items:center}
-canvas{border:1px solid #999;background:#fff}
-.graph-values{font-size:0.9em}
+
+h1, h2, h3 {
+    margin-top: 0;
+    color: #2c3e50;
+}
+
+h1 {
+    margin-bottom: 20px;
+    text-align: center;
+    border-bottom: 2px solid #e9ecef;
+    padding-bottom: 10px;
+}
+
+h2 {
+    margin-top: 25px;
+    margin-bottom: 15px;
+    font-size: 1.2rem;
+    color: #007bff;
+}
+
+/* Zavihki (Tabs) */
+.tabs {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.tab-button {
+    padding: 10px 20px;
+    background-color: #e9ecef;
+    color: #333;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: all 0.2s ease-in-out;
+}
+
+.tab-button:hover {
+    background-color: #d3d9df;
+}
+
+.tab-button.active {
+    background-color: #007bff;
+    color: white;
+    border-color: #007bff;
+    box-shadow: 0 2px 5px rgba(0,123,255,0.3);
+}
+
+/* Paneli (plošče) */
+.panel {
+    background-color: white;
+    border: 1px solid #ccc;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    margin-bottom: 20px;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Vrstice in vnosna polja */
+.row {
+    margin: 8px 0;
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.row label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-weight: 500;
+}
+
+input[type="number"], select {
+    padding: 8px 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 14px;
+    font-family: inherit;
+    outline: none;
+    transition: border-color 0.2s;
+    min-width: 120px;
+}
+
+input[type="number"]:focus, select:focus {
+    border-color: #007bff;
+    box-shadow: 0 0 0 2px rgba(0,123,255,0.25);
+}
+
+/* Poseben stil za rezultat */
+input[readonly] {
+    background-color: #e9ecef;
+    font-weight: bold;
+    color: #28a745;
+    border: 1px solid #ccc;
+    padding: 8px 10px;
+    border-radius: 4px;
+    font-size: 15px;
+    cursor: default;
+}
+
+/* Gumbi */
+.buttons {
+    display: flex;
+    gap: 10px;
+    margin-top: 15px;
+    flex-wrap: wrap;
+}
+
+button {
+    padding: 10px 15px;
+    background-color: #28a745; /* Zelena za akcijske gumbe (kot btn-success) */
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background-color 0.2s;
+}
+
+button:hover {
+    background-color: #218838;
+}
+
+/* Specifičen gumb za izris grafa (oranžen kot btn-serial v G-kodi) */
+#drawGraph {
+    background-color: #fd7e14;
+}
+
+#drawGraph:hover {
+    background-color: #e86e13;
+}
+
+/* Oblikovanje slik pri induktorjih */
+img {
+    border-radius: 8px;
+    padding: 10px;
+    background: white;
+    border: 1px solid #ddd;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+}
+
+/* Graf */
+.graph {
+    align-items: center;
+    max-width: 100%;
+}
+
+.graph-controls {
+    display: flex;
+    gap: 15px;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 15px;
+    width: 100%;
+    background: #f8f9fa;
+    padding: 15px;
+    border-radius: 6px;
+    border: 1px solid #e9ecef;
+}
+
+canvas {
+    border: 1px solid #ccc;
+    background: #fff;
+    border-radius: 4px;
+    box-shadow: inset 0 1px 3px rgba(0,0,0,0.1);
+    max-width: 100%;
+    height: auto;
+}
+
+.graph-values {
+    margin-top: 15px;
+    font-size: 14px;
+    font-weight: bold;
+    color: #333;
+    background: #e9ecef;
+    padding: 8px 20px;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+}
