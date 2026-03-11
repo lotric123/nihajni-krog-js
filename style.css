@@ -1,4 +1,4 @@
-/* style.css - Posodobljeno po zgledu aplikacije G-koda */
+/* style.css - Poravnano in optimizirano za mobilne naprave */
 
 body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -7,6 +7,12 @@ body {
     background-color: #f4f4f9;
     color: #333;
     line-height: 1.5;
+    box-sizing: border-box;
+}
+
+/* Osnovno pravilo za preprečevanje uhajanja elementov izven zaslona */
+*, *::before, *::after {
+    box-sizing: inherit;
 }
 
 h1, h2, h3 {
@@ -38,13 +44,16 @@ h2 {
 }
 
 .tab-button {
-    padding: 10px 20px;
+    flex: 1 1 auto; /* Zavihki se lepo razporedijo */
+    text-align: center;
+    padding: 12px 20px;
     background-color: #e9ecef;
     color: #333;
     border: 1px solid #ccc;
-    border-radius: 4px;
+    border-radius: 6px;
     cursor: pointer;
     font-weight: bold;
+    font-size: 15px;
     transition: all 0.2s ease-in-out;
 }
 
@@ -56,7 +65,7 @@ h2 {
     background-color: #007bff;
     color: white;
     border-color: #007bff;
-    box-shadow: 0 2px 5px rgba(0,123,255,0.3);
+    box-shadow: 0 4px 6px rgba(0,123,255,0.3);
 }
 
 /* Paneli (plošče) */
@@ -75,27 +84,37 @@ h2 {
 .row {
     margin: 8px 0;
     display: flex;
-    align-items: center;
-    flex-wrap: wrap;
-    gap: 10px;
+    width: 100%;
 }
 
 .row label {
     display: flex;
     align-items: center;
-    gap: 8px;
+    flex-wrap: wrap; /* Omogoča prelom v novo vrstico na malih zaslonih */
+    gap: 10px;
     font-weight: 500;
+    width: 100%;
 }
 
-input[type="number"], select {
-    padding: 8px 10px;
+input[type="number"], select, input[readonly] {
+    padding: 10px 12px;
     border: 1px solid #ccc;
     border-radius: 4px;
-    font-size: 14px;
+    font-size: 15px;
     font-family: inherit;
     outline: none;
     transition: border-color 0.2s;
-    min-width: 120px;
+}
+
+/* Vnosna polja naj se raztegnejo in zapolnijo prazen prostor */
+input[type="number"], input[readonly] {
+    flex: 1 1 120px;
+}
+
+/* Spustni seznami (enote) naj bodo fiksne širine glede na vsebino */
+select {
+    flex: 0 1 auto;
+    cursor: pointer;
 }
 
 input[type="number"]:focus, select:focus {
@@ -103,15 +122,11 @@ input[type="number"]:focus, select:focus {
     box-shadow: 0 0 0 2px rgba(0,123,255,0.25);
 }
 
-/* Poseben stil za rezultat */
 input[readonly] {
     background-color: #e9ecef;
     font-weight: bold;
     color: #28a745;
     border: 1px solid #ccc;
-    padding: 8px 10px;
-    border-radius: 4px;
-    font-size: 15px;
     cursor: default;
 }
 
@@ -124,21 +139,23 @@ input[readonly] {
 }
 
 button {
-    padding: 10px 15px;
-    background-color: #28a745; /* Zelena za akcijske gumbe (kot btn-success) */
+    flex: 1 1 auto;
+    padding: 12px 15px;
+    background-color: #28a745; 
     color: white;
     border: none;
     border-radius: 4px;
     cursor: pointer;
     font-weight: bold;
+    font-size: 15px;
     transition: background-color 0.2s;
+    text-align: center;
 }
 
 button:hover {
     background-color: #218838;
 }
 
-/* Specifičen gumb za izris grafa (oranžen kot btn-serial v G-kodi) */
 #drawGraph {
     background-color: #fd7e14;
 }
@@ -147,13 +164,15 @@ button:hover {
     background-color: #e86e13;
 }
 
-/* Oblikovanje slik pri induktorjih */
+/* Slike */
 img {
     border-radius: 8px;
     padding: 10px;
     background: white;
     border: 1px solid #ddd;
     box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+    max-width: 100%;
+    height: auto;
 }
 
 /* Graf */
@@ -164,7 +183,7 @@ img {
 
 .graph-controls {
     display: flex;
-    gap: 15px;
+    gap: 10px;
     flex-wrap: wrap;
     align-items: center;
     justify-content: center;
@@ -174,6 +193,13 @@ img {
     padding: 15px;
     border-radius: 6px;
     border: 1px solid #e9ecef;
+}
+
+.graph-controls label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-weight: 500;
 }
 
 canvas {
@@ -194,4 +220,56 @@ canvas {
     padding: 8px 20px;
     border-radius: 4px;
     border: 1px solid #ccc;
+    text-align: center;
+    width: 100%;
+}
+
+/* ========================================= */
+/* PRILAGODITVE ZA MOBILNE NAPRAVE (Telefoni)*/
+/* ========================================= */
+@media (max-width: 600px) {
+    body {
+        margin: 10px; /* Manjši robovi na telefonu */
+    }
+
+    .tabs {
+        flex-direction: column; /* Zavihki se zložijo eden pod drugega */
+        gap: 8px;
+    }
+
+    .tab-button {
+        width: 100%;
+    }
+
+    .row label {
+        align-items: flex-start;
+        flex-direction: column; /* Tekst zgoraj, polja spodaj */
+        gap: 5px;
+    }
+
+    /* Na telefonu naj se vnosno polje in padajoči meni postavita v isto vrsto in zapolnita prostor */
+    .row label > input[type="number"], 
+    .row label > input[readonly], 
+    .row label > select {
+        width: 100%;
+        margin-bottom: 5px;
+    }
+
+    .buttons {
+        flex-direction: column; /* Gumbi eden pod drugim */
+    }
+
+    button {
+        width: 100%;
+        padding: 15px; /* Še malo večji gumbi za lažji pritisk s prstom */
+    }
+
+    .graph-controls {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    
+    .graph-controls label {
+        justify-content: space-between;
+    }
 }
